@@ -62,4 +62,35 @@
         background-color: #dcf8c6;
     }
   }
+
+  .chat__footer{
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 62px;
+    border-top: 1px solid lightgray;
+
+    > form{
+        flex: 1;
+        display: flex;
+        >input{
+            flex: 1;
+            border-radius: 30px;
+            padding: 10px;
+            border: none;
+
+        }
+
+        >button{
+            display: none;
+        }
+    }
+
+    > .MuiSvgIcon-root{
+        padding: 10px;
+        color: gray;
+    }
+
+  }
 }

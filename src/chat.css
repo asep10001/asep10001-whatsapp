@@ -99,4 +99,45 @@
   font-weight: 800;
   font-size: xx-small;
 }
+
+.chat .chat__footer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  height: 62px;
+  border-top: 1px solid lightgray;
+}
+
+.chat .chat__footer > form {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.chat .chat__footer > form > input {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  border-radius: 30px;
+  padding: 10px;
+  border: none;
+}
+
+.chat .chat__footer > form > button {
+  display: none;
+}
+
+.chat .chat__footer > .MuiSvgIcon-root {
+  padding: 10px;
+  color: gray;
+}
 /*# sourceMappingURL=chat.css.map */
