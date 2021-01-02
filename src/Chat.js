@@ -11,17 +11,30 @@ import "./chat.css";
 import axios from "./axios";
 import { useParams } from "react-router-dom";
 import db from "./firebase";
+import { useStateValue } from "./StateProvider";
+import firebase from "firebase";
 
-function Chat({ messages }) {
+function Chat() {
   const [seed, setSeed] = useState("");
   const [input, setInput] = useState("");
   const { roomId } = useParams();
   const [roomName, setRoomName] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [{ user }, dispatch] = useStateValue();
+
   useEffect(() => {
     if (roomId) {
       db.collection("rooms")
         .doc(roomId)
-        .onSnapshot(snapshot => setRoomName(snapshot.data().name));
+        .onSnapshot((snapshot) => setRoomName(snapshot.data().name));
+
+      db.collection("rooms")
+        .doc(roomId)
+        .collection("messages")
+        .orderBy("timestamp", "asc")
+        .onSnapshot((snapshot) =>
+          setMessages(snapshot.docs.map((doc) => doc.data()))
+        );
     }
   }, [roomId]);
 
@@ -32,11 +45,10 @@ function Chat({ messages }) {
   const sendMessage = async (e) => {
     e.preventDefault();
 
-    await axios.post("/messages/new", {
+    db.collection("rooms").doc(roomId).collection("messages").add({
       message: input,
-      name: "Asep Agus",
-      timestamp: "Now...",
-      received: "false",
+      name: user.displayName,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     });
 
     setInput("");
@@ -69,14 +81,16 @@ function Chat({ messages }) {
           return (
             <p
               className={
-                message.received === "false"
+                message.name === user.displayName
                   ? "chat__message"
                   : "chat__receiver"
               }
             >
               <span className="chat__name">{message.name}</span>
               {message.message}
-              <span className="chat__timestamp">{message.timestamp}</span>
+              <span className="chat__timestamp">
+                {new Date(message.timestamp?.toDate()).toUTCString()}
+              </span>
             </p>
           );
         })}
