@@ -6,12 +6,29 @@ import {
   MoreVert,
   SearchOutlined,
 } from "@material-ui/icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./chat.css";
 import axios from "./axios";
+import { useParams } from "react-router-dom";
+import db from "./firebase";
 
 function Chat({ messages }) {
+  const [seed, setSeed] = useState("");
   const [input, setInput] = useState("");
+  const { roomId } = useParams();
+  const [roomName, setRoomName] = useState("");
+  useEffect(() => {
+    if (roomId) {
+      db.collection("rooms")
+        .doc(roomId)
+        .onSnapshot(snapshot => setRoomName(snapshot.data().name));
+    }
+  }, [roomId]);
+
+  useEffect(() => {
+    setSeed(Math.floor(Math.random() * 5000));
+  }, [roomId]);
+
   const sendMessage = async (e) => {
     e.preventDefault();
 
@@ -27,10 +44,10 @@ function Chat({ messages }) {
   return (
     <div className="chat">
       <div className="chat__header">
-        <Avatar />
+        <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`} />
 
         <div className="chat__headerInfo">
-          <h3>Room Name</h3>
+          <h3>{roomName}</h3>
           <p>Last seen at ..</p>
         </div>
 
