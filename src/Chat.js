@@ -82,8 +82,8 @@ function Chat() {
             <p
               className={
                 message.name === user.displayName
-                  ? "chat__message"
-                  : "chat__receiver"
+                  ? "chat__receiver"
+                  : "chat__message"
               }
             >
               <span className="chat__name">{message.name}</span>
